@@ -1,17 +1,10 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.io.*;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Task1 {
     private final static String INPUT_FILE = "INPUT.TXT";
-    private Set<String> set = new HashSet<>();
 
     public static void main(String [] args) {
         Task1 task = new Task1();
@@ -28,19 +21,20 @@ public class Task1 {
                 while (br.ready()) {
                     in = br.readLine();
                     String[] words = in.split(" ");
+                    boolean coincidence = false;
                     for (String args: arguments) {
+                        if (coincidence == true) break;
                         for (String word : words) {
                             Pattern pattern = Pattern.compile(args);
-                            Matcher matcher = pattern.matcher(word.replace(";", ""));
-                            if(matcher.find() && matcher.group().equals(word.replace(";", ""))) {
-                                set.add(in);
+                            String cleanWord = word.replace(";", "");
+                            Matcher matcher = pattern.matcher(cleanWord);
+                            if(matcher.find() && matcher.group().equals(cleanWord)) {
+                                System.out.println(in);
+                                coincidence = true;
                                 break;
                             }
                         }
                     }
-                }
-                for (String entity: set) {
-                    System.out.println(entity);
                 }
             }
             catch (FileNotFoundException e) {
